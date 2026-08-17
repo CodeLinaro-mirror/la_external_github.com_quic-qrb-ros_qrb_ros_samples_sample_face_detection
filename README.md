@@ -17,9 +17,9 @@ For model information, please refer to [MediaPipe-Face-Detection - Qualcomm AI H
 | ROS Node         | Description                                                  |
 | ---------------- | ------------------------------------------------------------ |
 | qrb_ros_face_detector | qrb_ros_face_detector is a Python-based ros jazzy packages that processes face images. This ROS node subscribes to an image topic, and publishes face image result topic after pre/post processing. ` |
-| [qrb_ros_nn_inference](https://github.com/qualcomm-qrb-ros/qrb_ros_nn_inference) | qrb_ros_nn_inference is a ROS2 package for performing neural network model, providing AI-based perception for robotics applications. |
-| [qrb ros camera](https://github.com/qualcomm-qrb-ros/qrb_ros_camera) | Qualcomm ROS 2 package that captures images with parameters and publishes them to ROS topics. |
-| [image_publisher_node](https://github.com/ros-perception/image_pipeline) | image_publisher is  a ros jazzy packages, can publish image ros topic with local path. |
+| qrb_ros_nn_inference | qrb_ros_nn_inference is a ROS2 package for performing neural network model, providing AI-based perception for robotics applications. |
+| qrb ros camera | Qualcomm ROS 2 package that captures images with parameters and publishes them to ROS topics. |
+| image_publisher_node | image_publisher is  a ros jazzy packages, can publish image ros topic with local path. |
 
 
 ## 🔎 Table of contents
@@ -63,21 +63,22 @@ For model information, please refer to [MediaPipe-Face-Detection - Qualcomm AI H
 
 ## 🚀 Usage
 
-<details>
   <summary>Usage details</summary>
 
 ```bash
-# Set up the runtime environment for QClinux platform.
-export HOME=/opt
-source /usr/share/qirp-setup.sh
-export ROS_DOMAIN_ID=xx # Value range of ROS_DOMAIN_ID: [0, 232]
+# Export the NN inference required variables.
+export ADSP_LIBRARY_PATH="/usr/lib/rfsa/adsp;/usr/lib/rfsa/adsp/hexagon-v81"
+export CDSP_LIBRARY_PATH="/vendor/dsp/cdsp0;/usr/lib/rfsa/adsp/hexagon-v81"
+
+# setup ros environment
+source /opt/ros/jazzy/setup.bash
 
 # You can use defalut face image file
 ros2 launch sample_face_detection launch_with_image_publisher.py model_path:=/opt/model/
 # You can also replace this with a custom image file
 ros2 launch sample_face_detection launch_with_image_publisher.py image_path:=/opt/resource/xxx.jpg model_path:=/opt/model/
 or # You can launch with qrb_ros_camera lacunch file
-ros2 launch sample_face_detection launch_with_qrb_ros_camera.py  model_path:=/opt/model/
+ros2 launch sample_face_detection launch_with_qrb_ros_camera_iq10.py  model_path:=/opt/model/
 ```
 
 When using this launch script, it will use the default parameters:
@@ -105,88 +106,58 @@ parameters=[
 
 It will send local glasses.jpg file, and outputs image at `10` Hz. 
 
-The output for these commands:
+The output key logs:
 
 ```
-[INFO] [launch]: All log files can be found below /opt/.ros/log/1970-01-07-14-29-55-414204-qcs9075-iq-9075-evk-3111720
-[INFO] [launch]: Default logging verbosity is set to INFO
-[INFO] [component_container-1]: process started with pid [3111750]
-[INFO] [component_container-2]: process started with pid [3111751]
-[INFO] [qrb_ros_face_detector-3]: process started with pid [3111752]
-[component_container-1] [INFO] [0000570595.865649109] [my_container]: Load Library: /usr/lib/libcamera_node.so
-[component_container-2] [INFO] [0000570595.868632025] [image_processing_container]: Load Library: /usr/lib/libqrb_ros_inference_node.so
-[component_container-2] [INFO] [0000570595.872836765] [image_processing_container]: Found class: rclcpp_components::NodeFactoryTemplate<qrb_ros::nn_inference::QrbRosInferenceNode>
-[component_container-2] [INFO] [0000570595.872910671] [image_processing_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<qrb_ros::nn_inference::QrbRosInferenceNode>
+[image_publisher_node-1] [INFO] [1787105463.881644663] [image_publisher_node]: File name for publishing image is: /opt/ros/jazzy/share/sample_face_detection/face_image.jpg
 [component_container-2] [QRB INFO] Loading model from binary file: /opt/model/MediaPipeFaceDetector.bin
-[component_container-1] [INFO] [0000570595.882365098] [my_container]: Found class: rclcpp_components::NodeFactoryTemplate<qrb_ros::camera::CameraNode>
-[component_container-1] [INFO] [0000570595.882437442] [my_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<qrb_ros::camera::CameraNode>
-[component_container-1] [INFO] [0000570595.889684525] [camera_node]: QRB Camera Node statrt
-[component_container-1] [INFO] [0000570595.889941557] [camera_node]: load camera intrinsic param
-[component_container-1] [INFO] [0000570595.895467807] [camera_node]: system time: 570593556709625 ros time: 570595895466192 time offset: 2338756567 ns
-[component_container-1] [INFO] [0000570595.896553484] [camera_node]: QRB Camera Node init success
-[component_container-1] [INFO] [QMMFCamera]: start camera.
-[component_container-2]  <W> Initializing HtpProvider
 [component_container-2] [QRB INFO] /usr/lib/libQnnHtp.so initialize successfully
-[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/camera_node' in container '/my_container'
-[component_container-2] /prj/qct/webtech_scratch20/mlg_user_admin/qaisw_source_repo/rel/qairt-2.35.0/release/snpe_src/avante-tools/prebuilt/dsp/hexagon-sdk-5.4.0/ipc/fastrpc/rpcmem/src/rpcmem_android.
-c:38:dummy call to rpcmem_init, rpcmem APIs will be used from libxdsprpc
 [component_container-2] [QRB INFO] Qnn device initialize successfully
-[component_container-2] [QRB INFO] Initialize Qnn graph from binary file successfully
-[component_container-2] [INFO] [0000570596.007669109] [nn_inference_node_face_detector]: Inference init successfully!
-[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/nn_inference_node_face_detector' in container '/image_processing_container'
-[component_container-2] [INFO] [0000570596.010963119] [image_processing_container]: Found class: rclcpp_components::NodeFactoryTemplate<qrb_ros::nn_inference::QrbRosInferenceNode>
-[component_container-2] [INFO] [0000570596.011018327] [image_processing_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<qrb_ros::nn_inference::QrbRosInferenceNode>
+[component_container-2] [INFO] [1787105464.311213459] [nn_inference_node_face_detector]: Inference init successfully!
 [component_container-2] [QRB INFO] Loading model from binary file: /opt/model/MediaPipeFaceLandmarkDetector.bin
-[component_container-2] [QRB INFO] /usr/lib/libQnnHtp.so initialize successfully
-[component_container-2] [QRB INFO] Qnn device initialize successfully
-[component_container-2] [QRB INFO] Initialize Qnn graph from binary file successfully
-[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/nn_inference_node_face_landmark' in container '/image_processing_container'
-[component_container-2] [INFO] [0000570596.049267234] [nn_inference_node_face_landmark]: Inference init successfully!
-[qrb_ros_face_detector-3] [INFO] [0000570596.132309786] [mediaface_det_node]: MODEL_PATH set to: /opt/model/
-[qrb_ros_face_detector-3] [INFO] [0000570596.133496557] [mediaface_det_node]: init done~
-[qrb_ros_face_detector-3] [INFO] [0000570596.401828900] [mediaface_det_node]: Received image on image_raw topic
-[qrb_ros_face_detector-3] [INFO] [0000570596.409178744] [mediaface_det_node]: Processed for face detection, publishing TensorList
-[component_container-2] [INFO] [0000570596.424597494] [nn_inference_node_face_detector]: Got model input data, start executing inference...
-[component_container-2] [INFO] [0000570596.428739734] [nn_inference_node_face_detector]: Inference execute successfully!
-[component_container-2] [INFO] [0000570596.428851244] [nn_inference_node_face_detector]: Publish the inference result...
-[qrb_ros_face_detector-3] [INFO] [0000570596.429197390] [mediaface_det_node]: Already processing an image, skipping this one.
-[qrb_ros_face_detector-3] [INFO] [0000570596.430287390] [mediaface_det_node]: Received TensorList on face_detector_output_tensor
+[component_container-2] [INFO] [1787105464.332459151] [nn_inference_node_face_landmark]: Inference init successfully!
+[qrb_ros_face_detector-3] [INFO] [1787105464.350295832] [mediaface_det_node]: init done~
+[component_container-2] [INFO] [1787105464.502121501] [nn_inference_node_face_detector]: Got model input data, start executing inference...
+[component_container-2] [INFO] [1787105464.505947393] [nn_inference_node_face_detector]: Inference execute successfully!
+[component_container-2] [INFO] [1787105464.505984477] [nn_inference_node_face_detector]: Publish the inference result...
 
 ```
+Verify Results Then you can check the /mediaface_det_image ROS topic
 
-Then you can check the /mediaface_det_image ROS topic in rviz.
-
-</details>
-
-## 👨‍💻 Build from source
-
-<details>
-  <summary>Build from source details</summary>
-
-Download the source code and build with colcon
-
-```bash
-git clone https://github.com/qualcomm-qrb-ros/qrb_ros_samples.git
-cd ai_vision/sample_face_detection
-colcon build
 ```
-
-Run and debug
-
-```bash
+# Open a new terminal
 source /opt/ros/jazzy/setup.bash
-source install/setup.bash
-# You can use defalut face image file
-ros2 launch sample_face_detection launch_with_image_publisher.py model_path:=/opt/model/
 
-# You can also replace this with a custom image file
-ros2 launch sample_face_detection launch_with_image_publisher.py image_path:=/opt/resource/xxx.jpg model_path:=/opt/model/
+ros2 topic echo /mediaface_det_image
 
-# You can launch with qrb ros camera
-ros2 launch sample_face_detection launch_with_qrb_ros_camera.py  model_path:=/opt/model/
+example output:
+    ---
+    header:
+      stamp:
+        sec: 0
+        nanosec: 0
+      frame_id: ''
+    height: 355
+    width: 325
+    encoding: bgr8
+    is_bigendian: 0
+    step: 975
+    data:
+    - 255
+    ...
+
 ```
 
-</details>
+The IQ10 device doesn't support a desktop environment, so view the face detection result with rqt from a separate Ubuntu host machine that has desktop support and is on the same ROS network.
+
+```
+# Open a new terminal
+source /opt/ros/jazzy/setup.bash
+rqt
+
+```
+Select menu selection: `Plugins --> Visualization --> Image View`, then select the /mediaface_det_image topic to view the detected faces and facial landmarks overlaid on the input image.
+
 
 ## 🤝 Contributing
 
@@ -207,10 +178,8 @@ Thanks to all our contributors who have helped make this project better!
 
 ## ❔ FAQs
 
-<details>
 <summary>Can detect multiple face?</summary><br>
 No,it can only support single face detection.
-</details>
 
 
 ## 📜 License

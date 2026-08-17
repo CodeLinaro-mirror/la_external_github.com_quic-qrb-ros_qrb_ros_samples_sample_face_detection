@@ -1,3 +1,7 @@
+ros-jazzy-sample-face-detection (1.0.1.2) noble; urgency=high
+  * add qrb-ros-camera launch file for IQ10
+ -- Chuhao Xie <chuhxie@qti.qualcomm.com>  Mon, 17 Aug 2026 13:20:59 -0000
+
 ros-jazzy-sample-face-detection (1.0.1.1) noble; urgency=high
 
   * fix frequency stable issues and optimize shutdown machanism
