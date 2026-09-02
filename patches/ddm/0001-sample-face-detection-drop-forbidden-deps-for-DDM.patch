@@ -1,0 +1,47 @@
+From d3780147b07a2bf23b286a9aaf741efacffb2faf Mon Sep 17 00:00:00 2001
+From: hangshen <hangshen@qti.qualcomm.com>
+Date: Thu, 6 Aug 2026 16:14:19 +0800
+Subject: [PATCH] sample-face-detection: drop forbidden deps for DDM
+
+Remove python3-opencv, ros-jazzy-image-publisher and ros-jazzy-cv-bridge
+from runtime Depends (and the matching exec_depend tags in package.xml)
+so the DDM image does not pull in license-forbidden packages.
+
+Change-Id: Iefdb16654595bf7b5282df098533c1d6ffe5675d
+---
+ debian/control | 2 +-
+ package.xml    | 2 --
+ 2 files changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/debian/control b/debian/control
+index c6e3850..431b53b 100644
+--- a/debian/control
++++ b/debian/control
+@@ -8,5 +8,5 @@ Standards-Version: 3.9.2
+ 
+ Package: ros-jazzy-sample-face-detection
+ Architecture: any
+-Depends: ${python3:Depends}, ${misc:Depends}, python3-numpy, python3-opencv, ros-jazzy-ament-index-python, ros-jazzy-image-publisher, ros-jazzy-launch-ros, ros-jazzy-qrb-ros-camera (>= 2.0.0), ros-jazzy-qrb-ros-nn-inference(>=1.1.1), ros-jazzy-qrb-ros-tensor-list-msgs, ros-jazzy-rclpy, ros-jazzy-sensor-msgs, ros-jazzy-cv-bridge, ros-jazzy-rclcpp-components, ros-jazzy-std-msgs
++Depends: ${python3:Depends}, ${misc:Depends}, python3-numpy, ros-jazzy-ament-index-python, ros-jazzy-launch-ros, ros-jazzy-qrb-ros-camera (>= 2.0.0), ros-jazzy-qrb-ros-nn-inference(>=1.1.1), ros-jazzy-qrb-ros-tensor-list-msgs, ros-jazzy-rclpy, ros-jazzy-sensor-msgs, ros-jazzy-rclcpp-components, ros-jazzy-std-msgs
+ Description: sample_face_detection is a Python-based face recognition ROS node that uses QNN for model inference.
+diff --git a/package.xml b/package.xml
+index 132ab06..d11a249 100644
+--- a/package.xml
++++ b/package.xml
+@@ -18,13 +18,11 @@
+   <build_depend>python3-numpy</build_depend>
+ 
+   <!-- Execution dependencies -->
+-  <exec_depend>python3-opencv</exec_depend>
+   <exec_depend>rclpy</exec_depend>
+   <exec_depend>launch_ros</exec_depend>
+   <exec_depend>ament_index_python</exec_depend>
+   <exec_depend>sensor_msgs</exec_depend>
+   <exec_depend>python3-numpy</exec_depend>
+-  <exec_depend>image_publisher</exec_depend>
+   <exec_depend>qrb_ros_tensor_list_msgs</exec_depend>
+   <exec_depend>qrb_ros_nn_inference</exec_depend>
+   <exec_depend>qrb_ros_camera</exec_depend>
+-- 
+2.43.0
+
