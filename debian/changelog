@@ -1,3 +1,10 @@
+ros-jazzy-sample-face-detection (1.0.1.3) noble; urgency=high
+
+  * Use SingleThreadedExecutor for face detection node to avoid low-FPS
+    callback scheduling contention on IQ10.
+
+ -- Chuhao Xie <chuhxie@qti.qualcomm.com>  Wed, 09 Sep 2026 11:35:00 -0000
+
 ros-jazzy-sample-face-detection (1.0.1.2) noble; urgency=high
   * add qrb-ros-camera launch file for IQ10
  -- Chuhao Xie <chuhxie@qti.qualcomm.com>  Mon, 17 Aug 2026 13:20:59 -0000

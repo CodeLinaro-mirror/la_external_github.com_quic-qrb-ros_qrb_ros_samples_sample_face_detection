@@ -9,7 +9,7 @@ import threading
 import uuid
 import numpy as np
 from rclpy.node import Node
-from rclpy.executors import MultiThreadedExecutor
+from rclpy.executors import SingleThreadedExecutor
 from rclpy.qos import QoSProfile, QoSHistoryPolicy, ReliabilityPolicy
 from cv_bridge import CvBridge
 from sensor_msgs.msg import Image
@@ -337,7 +337,7 @@ def main(args=None):
 
     try:
         face_detector_node = MediaFaceDetNode()
-        executor = MultiThreadedExecutor(num_threads=4)
+        executor = SingleThreadedExecutor()
         executor.add_node(face_detector_node)
         executor.spin()
     except KeyboardInterrupt:
